@@ -1,0 +1,28 @@
+name: Data Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run_pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Kafka Producer
+        run: python src/kafka_producer.py
+
+      - name: Run Kafka Consumer
+        run: python src/kafka_consumer.py
+
+      - name: Run Data Analysis
+        run: python src/data_analysis.py
